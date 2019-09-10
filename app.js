@@ -32,7 +32,6 @@ mongoose.connect(url, function(err){
 // GET ADD NEW DEVELOPER 
 app.get('/',function(req,res){
     res.sendFile(__dirname + "/views/adddev.html");
-    
 }); 
 
 // POST ADD NEW DEVELOPER
@@ -70,7 +69,13 @@ app.get('/getdevelopers', function(req,res){
 
 // GET ADD TASK
 app.get('/addtask',function(req,res){
-    res.sendFile(__dirname + "/views/addtask.html");
+    Developer.find().exec(function(err, docs){
+       console.log(docs);
+       
+       res.render(__dirname + "/views/addmanytask.html", {
+           devobj: docs
+       });
+   });
 }); 
 
 // POST ADD TASK
@@ -99,11 +104,10 @@ app.get('/addmanytask',function(req,res){
      Developer.find().exec(function(err, docs){
         console.log(docs);
         
-    res.render(__dirname + "/views/addmanytask.html", {
-        devobj: docs
+        res.render(__dirname + "/views/addmanytask.html", {
+            devobj: docs
+        });
     });
-    });
-
 }); 
 
 // POST ADD MANY TASK
