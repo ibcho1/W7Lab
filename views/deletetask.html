@@ -18,7 +18,15 @@
     </h1>
     <div>
         <form action="/deletetaskdata" method="POST">
-            Task ID <input type="text" method="POST" name="tid" /> </br>
+            Task ID
+
+            <select name='tid'>
+                <% for ( var i = 0; i < taskarr.length; i++){ %>
+
+                <option value="<%= taskarr[i]._id %>"> <%= taskarr[i]._id %> </option>
+                <% } %>
+            </select></br>
+
             <input type="submit" value="Submit" /> </br>
         </form>
     </div>

@@ -153,7 +153,17 @@ app.get('/gettasks', function(req,res){
 
 // GET DELETE TASK
 app.get('/deletetask', function (req, res) {
-    res.sendFile(__dirname + '/views/deletetask.html');
+
+
+    Task.find().exec(function(err, docs){
+        console.log(docs);
+        
+        res.render(__dirname + "/views/deletetask.html", {
+            taskarr: docs
+        });
+    });
+
+
 });
 
 // POST DELETE TASK
