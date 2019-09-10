@@ -3,6 +3,9 @@ let express = require('express');
 let app = express();
 let mongodb = require ('mongodb');
 
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 let bodyParser=require('body-parser'); //needed as the middleware for the post request
 app.use(bodyParser.urlencoded({extended:false}));
 
@@ -91,6 +94,50 @@ app.post('/addnewtask', function(req,res){
         })
 })
 
+// GET ADD MANY TASK
+app.get('/addmanytask',function(req,res){
+     Developer.find().exec(function(err, docs){
+        console.log(docs);
+        
+    res.render(__dirname + "/views/addmanytask.html", {
+        devobj: docs
+    });
+    });
+
+}); 
+
+// POST ADD MANY TASK
+app.post('/addmanynewtask', function(req,res){
+    let taskDetails = req.body;
+    let obj = [];
+    let count = taskDetails.tcount;
+    console.log(count);
+
+    for(let i = 1; i <= count; i++){
+        let task = new Task({
+            name: taskDetails.tname,
+            assign: taskDetails.tdevid,
+            due: taskDetails.tdate,
+            status: taskDetails.tstatus,
+            desc: taskDetails.tdesc
+        });
+        obj.push(task);
+    }
+    
+    console.log(obj);
+
+        
+    Task.insertMany(obj, function(err,result){
+        if (err)
+            console.log(err);
+        else
+        console.log('Task Saved');
+        res.redirect('/');
+    });
+
+})
+
+
 // GET ALL TASKS
 app.get('/gettasks', function(req,res){
     Task.find().populate('task').exec(function(err, data){
@@ -146,9 +193,6 @@ app.post('/updatetaskdata', function (req, res) {
     });
     res.redirect('/gettasks');// redirect the client to list users page
 });
-
-
-
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');

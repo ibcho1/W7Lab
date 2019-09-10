@@ -17,9 +17,17 @@
         <a href="/updatetask"> Update Task</a>
 
     </h1>
-    <form action="/addnewtask" method="POST">
+    <form action="/addmanynewtask" method="POST">
         Task Name <input type="text" method="POST" name="tname" /> </br>
-        Assign Developer ID <input type="text" method="POST" name="tdevid" /></br>
+        Assign Developer ID  </br>
+        
+        <select name ='tdevid'>
+            <% for ( var i = 1; i <= devobj.length; i++){ %>
+        
+            <option value="<%= devobj[i].id %>"> <%= devobj[i].name %> </option>
+           <% } %>
+        </select>
+
         Due Date <input type="date" method="POST" name="tdate" /></br>
         Status
         <select method="POST" name="tstatus">
@@ -28,7 +36,7 @@
         </select>
         </br>
         Description <input type="text" method="POST" name="tdesc" /> </br>
-       
+        Count <input type="number" method="POST" name="tcount" /> <br>
         <input type="submit" value="Submit" /> </br>
 
     </form>
